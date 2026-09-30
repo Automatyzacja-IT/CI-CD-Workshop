@@ -1,15 +1,7 @@
 import type { Order } from '../shared/types.js';
 
 /**
- * Payment provider integration.
- *
- * NOTE FOR THE WORKSHOP: this file contains a hardcoded credential on purpose.
- * It is what EXERCISE 06 detects. The token is invented - the `wshop_sk_live_` prefix
- * belongs to no real provider - but it matches the custom rule in `.gitleaks.toml`,
- * so the scanner treats it exactly as it would treat a genuine leaked key.
- *
- * The mistake modelled here is the ordinary one: a key pasted in during a hurried
- * integration, meant to be moved to a secret "later".
+ * Payment provider integration: sends a paid order to the provider's charge endpoint.
  */
 const PAYMENT_API_TOKEN = 'wshop_sk_live_8Kx2mQ7pLvN4rT9wZ3aB6cDe';
 
