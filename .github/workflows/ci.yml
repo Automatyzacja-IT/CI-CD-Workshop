@@ -13,7 +13,15 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    - cron: '0 2 * * *'
   workflow_dispatch:
+    inputs:
+      suite:
+        description: 'UI test scope'
+        type: choice
+        default: smoke
+        options: [smoke, regression, all]
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -139,7 +147,17 @@ jobs:
         with:
           name: dist
           path: dist/
-      - run: npm run test:ui
+      - name: UI tests
+        run: npx playwright test --project=ui-chromium ${{ env.GREP }}
+        env:
+          GREP: >-
+            ${{ (github.event_name == 'pull_request'
+                 || (github.event_name == 'workflow_dispatch' && inputs.suite == 'smoke'))
+                && '--grep @smoke'
+             || (github.event_name == 'workflow_dispatch' && inputs.suite == 'regression')
+                && '--grep-invert @smoke'
+             || '' }}
+
 
       - uses: actions/upload-artifact@v4
         with:
