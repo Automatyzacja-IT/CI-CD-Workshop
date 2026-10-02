@@ -11,3 +11,4 @@ createRoot(container).render(
     <App />
   </StrictMode>,
 );
+import './missing-styles.css';
