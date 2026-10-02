@@ -147,7 +147,8 @@ jobs:
         with:
           name: dist
           path: dist/
-      - name: UI tests
+
+      - name: UI tests (${{ github.event_name == 'pull_request' && 'smoke' || github.event_name == 'workflow_dispatch' && inputs.suite || 'full regression' }})
         run: npx playwright test --project=ui-chromium ${{ env.GREP }}
         env:
           GREP: >-
